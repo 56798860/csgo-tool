@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CSGO选品工具-BUFF/STEAM
 // @icon         https://csgo.isfunc.cn/favicon.ico
-// @version      1.01
+// @version      1.02
 // @description  ISFUNC出品的一款免费用于csgo饰品选品的脚本
 // @homepageURL  http://csgo.isfunc.cn
 // @author       ISFUNC
@@ -63,9 +63,9 @@
             onload: function (res) {
                 if (res && res.status == 200) {
                     let jsonObj = JSON.parse(res.responseText);
-                    if(jsonObj.error){
-                        alert("BUFF:"+jsonObj.error)
-                    }else{
+                    if (jsonObj.error) {
+                        alert("BUFF:" + jsonObj.error)
+                    } else {
                         let data = jsonObj.data
                         let total_page = data.total_page
                         //创建分页
@@ -73,7 +73,7 @@
                         //创建列表
                         createTable(data.items)
                     }
-                    
+
                 }
             }
         });
@@ -86,36 +86,56 @@
             //steam 挂刀收益
             let steam_income = ((+val.sell_min_price / +exchange * 0.85 - +val.goods_info.steam_price) / +val.goods_info.steam_price).toFixed(2);
             let buff_income = ((+val.goods_info.steam_price * +proportion - +val.sell_min_price) / +val.sell_min_price).toFixed(2);
-            let html = `<tr>
-                    <th>${val.name}</th>
-                    <td>${val.sell_num}</td>
-                    <td>${val.sell_min_price}</td>
-                    <td id="buff_want_${index}">获取中</td>
-                    <td id="buff_want_max_${index}">获取中</td>
 
-                    <td>${val.goods_info.steam_price}|${(val.goods_info.steam_price * proportion).toFixed(2)}</td>
+            //读取配置是否获取挂刀负收益
+            let gd = $("input[name='gd']:checked").length;
 
-                    <td id="steam_median_${index}"}>获取中</td>
+            //读取配置是否获取变现负收益
+            let bx = $("input[name='bx']:checked").length;
+            let add_type = false
+            if (!gd && !bx) {
+                console.log(1)
+                add_type = true
+            } else if (!bx && gd && +steam_income > 0) {
+                console.log(2)
+                add_type = true
+            } else if (!gd && bx && +buff_income > 0) {
+                console.log(3)
+                add_type = true
+            }
+            if (add_type) {
+                let html = `<tr>
+                <th>${val.name}</th>
+                <td>${val.sell_num}</td>
+                <td>${val.sell_min_price}</td>
+                <td id="buff_want_${index}">获取中</td>
+                <td id="buff_want_max_${index}">获取中</td>
 
-                    <td id="steam_sales_${index}">获取中</td>
-                    <td ><button class="btn" id="steam_want_btn_${index}">获取中</button><div id="steam_want_${index}" style="display:none"></div></td>
-                    <td id="steam_income_${index}">${steam_income}</td>
-                    <td id="buff_income_${index}">${buff_income}</td>
-                    <td>
-                        <a target="_blank" href="${val.steam_market_url}">steam市场</a>
-                        <br>
-                        <br>
-                        <a target="_blank" href="https://buff.163.com/goods/${val.id}">buff市场</a>
-                    </td>
-                </tr>`
-            $('#table').append(html);
-            getBuffOtherInfo(val.id, index);
-            let query_index = setInterval(() => {
-                if (steam_query_type) {
-                    getSteamOtherInfo(val.steam_market_url, val.market_hash_name, index)
-                    clearInterval(query_index)
-                }
-            }, 200)
+                <td>${val.goods_info.steam_price}|${(val.goods_info.steam_price * proportion).toFixed(2)}</td>
+
+                <td id="steam_median_${index}"}>获取中</td>
+
+                <td id="steam_sales_${index}">获取中</td>
+                <td ><button class="btn" id="steam_want_btn_${index}">获取中</button><div id="steam_want_${index}" style="display:none"></div></td>
+                <td id="steam_income_${index}">${steam_income}</td>
+                <td id="buff_income_${index}">${buff_income}</td>
+                <td>
+                    <a target="_blank" href="${val.steam_market_url}">steam市场</a>
+                    <br>
+                    <br>
+                    <a target="_blank" href="https://buff.163.com/goods/${val.id}">buff市场</a>
+                </td>
+            </tr>`
+                $('#table').append(html);
+                getBuffOtherInfo(val.id, index);
+                let query_index = setInterval(() => {
+                    if (steam_query_type) {
+                        getSteamOtherInfo(val.steam_market_url, val.market_hash_name, index)
+                        clearInterval(query_index)
+                    }
+                }, 200)
+            }
+
         });
 
     }
