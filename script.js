@@ -24,7 +24,7 @@
         window.open("http://csgo.isfunc.cn");
     });
     GM_registerMenuCommand('交流QQ群', () => {
-        window.open("https://greasyfork.org/zh-CN/scripts/410137");
+        window.open("https://qm.qq.com/cgi-bin/qm/qr?k=u0i4cGaj7XsLMP6oA1jNRfkcF_pZy1Km&jump_from=webapi&authKey=GrU4U1RxilAlIO+OAjzeN5YpYW0OF3G/JIInXqcgTZxcBIfLG0psgdk+VoL9BIoG");
     });
 
     var init = async () => {

@@ -3,6 +3,7 @@
 该脚本是基于游猴插件开发，对CSGO玩家在BUFF以及STEAM市场上选择饰品时遇到不知选择哪个比较好，收益高等情况进行解决。
 
 
+
 ## 脚本开源地址：
 
 github：[https://github.com/56798860/csgo-tool](https://github.com/56798860/csgo-tool)
