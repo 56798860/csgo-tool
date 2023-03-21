@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CSGO选品工具-BUFF/STEAM
 // @icon         https://csgo.isfunc.cn/favicon.ico
-// @version      1.02
+// @version      1.04
 // @description  ISFUNC出品的一款免费用于csgo饰品选品的脚本
 // @homepageURL  http://csgo.isfunc.cn
 // @author       ISFUNC
@@ -84,9 +84,10 @@
             let proportion = $('#proportion').val()
             let exchange = $("#exchange").val();
             //steam 挂刀收益
-            let steam_income = ((+val.sell_min_price / +exchange * 0.85 - +val.goods_info.steam_price) / +val.goods_info.steam_price).toFixed(2);
-            let buff_income = ((+val.goods_info.steam_price * +proportion - +val.sell_min_price) / +val.sell_min_price).toFixed(2);
-
+            // let steam_income = ((+val.sell_min_price / +exchange * 0.85 - +val.goods_info.steam_price) / +val.goods_info.steam_price).toFixed(2);
+            // let buff_income = ((+val.goods_info.steam_price * +proportion - +val.sell_min_price) / +val.sell_min_price).toFixed(2);
+            let steam_income = ((+val.sell_min_price / +exchange  - +val.goods_info.steam_price)* 0.85).toFixed(2)
+            let buff_income = (+val.goods_info.steam_price * +proportion - +val.sell_min_price).toFixed(2)
             //读取配置是否获取挂刀负收益
             let gd = $("input[name='gd']:checked").length;
 
